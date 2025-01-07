@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profil - ZidSimPin</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Animasi untuk fade-in saat halaman dimuat */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Animasi untuk hover card */
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.02);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      /* Animasi untuk loading bar */
+      @keyframes slideIn {
+        from {
+          transform: scaleX(0);
+        }
+        to {
+          transform: scaleX(1);
+        }
+      }
+
+      body {
+        font-family: 'Arial', sans-serif;
+        line-height: 1.6;
+        background-color: #f5f5f5;
+      }
+
+      header {
+        background-color: #2c3e50;
+        padding: 1rem;
+        color: white;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        transition: transform 0.3s ease;
+      }
+
+      /* Header akan tersembunyi saat scroll ke bawah */
+      header.hidden {
+        transform: translateY(-100%);
+      }
+
+      .header-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        animation: fadeIn 0.8s ease-out;
+      }
+
+      .logo img {
+        height: 40px;
+        transition: transform 0.3s ease;
+      }
+
+      .logo img:hover {
+        transform: rotate(360deg);
+      }
+
+      .logo h1 {
+        font-size: 1.5rem;
+        color: #ecf0f1;
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+        gap: 2rem;
+      }
+
+      nav a {
+        color: white;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      nav a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #3498db;
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+      }
+
+      nav a:hover::after {
+        transform: scaleX(1);
+      }
+
+      .profile-container {
+        max-width: 1000px;
+        margin: 6rem auto 2rem;
+        padding: 2rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 1s ease-out;
+      }
+
+      .profile-header {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding-bottom: 2rem;
+        border-bottom: 2px solid #f0f0f0;
+        position: relative;
+      }
+
+      .profile-header::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, #2c3e50, #3498db);
+        transform-origin: left;
+        animation: slideIn 1.5s ease-out forwards;
+      }
+
+      .profile-header h2 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        font-size: 2rem;
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+        animation-delay: 0.3s;
+      }
+
+      .profile-header p {
+        color: #666;
+        font-size: 1.1rem;
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+        animation-delay: 0.5s;
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+      }
+
+      .feature-card {
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        opacity: 1px;
+        animation: fadeIn 0.8s ease-out forwards;
+      }
+
+      .feature-card:nth-child(1) {
+        animation-delay: 0.6s;
+      }
+      .feature-card:nth-child(2) {
+        animation-delay: 0.8s;
+      }
+      .feature-card:nth-child(3) {
+        animation-delay: 1s;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        animation: pulse 2s infinite;
+      }
+
+      .feature-card h3 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+      }
+
+      .about-section {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 2px solid #f0f0f0;
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+        animation-delay: 1.2s;
+      }
+
+      .contact-info {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        transition: transform 0.3s ease;
+      }
+
+      .contact-info:hover {
+        transform: scale(1.02);
+      }
+
+      .contact-item {
+        margin-bottom: 0.5rem;
+        transition: transform 0.3s ease;
+        cursor: pointer;
+      }
+
+      .contact-item:hover {
+        transform: translateX(10px);
+        color: #3498db;
+      }
+
+      footer {
+        background-color: #2c3e50;
+        color: white;
+        padding: 2rem;
+        margin-top: 3rem;
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+        animation-delay: 1.4s;
+      }
+
+      @media (max-width: 768px) {
+        .header-container {
+          flex-direction: column;
+          align-items: flex-start;
+          padding-right: 40px;
+        }
+
+        .logo h1 {
+          display: none;
+        }
+
+        nav ul {
+          display: none;
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+          width: 100%;
+          padding: 1rem 0;
+        }
+
+        nav ul.active {
+          display: flex;
+          animation: fadeIn 0.5s ease-out;
+        }
+
+        .profile-container {
+          margin: 5rem 1rem 1rem;
+          padding: 1rem;
+        }
+
+        .features {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .menu-toggle {
+        display: none;
+        cursor: pointer;
+        font-size: 1.5rem;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: transform 0.3s ease;
+      }
+
+      .menu-toggle:hover {
+        transform: translateY(-50%) scale(1.1);
+      }
+
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: block;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-container">
+        <div class="logo">
+          <img src="download.png" alt="SimPin Logo" />
+          <h1>ZidSimPin</h1>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="landing.html">Beranda</a></li>
+            <li><a href="transaksi.html">Transaksi</a></li>
+            <li><a href="profile.html">Profil</a></li>
+            <li><a href="index.html">Login</a></li>
+          </ul>
+        </nav>
+        <div class="menu-toggle">☰</div>
+      </div>
+    </header>
+
+    <main>
+      <div class="profile-container">
+        <div class="profile-header">
+          <h2>Tentang ZidSimPin</h2>
+          <p>Solusi Keuangan Digital untuk Masa Depan yang Lebih Baik</p>
+        </div>
+
+        <div class="features">
+          <div class="feature-card">
+            <h3>Simpanan Aman</h3>
+            <p>Dana Anda dijamin keamanannya dengan sistem enkripsi terkini dan perlindungan data yang ketat.</p>
+          </div>
+          <div class="feature-card">
+            <h3>Pinjaman Mudah</h3>
+            <p>Proses pengajuan pinjaman yang cepat dengan persyaratan yang mudah dan bunga kompetitif.</p>
+          </div>
+          <div class="feature-card">
+            <h3>Layanan 24/7</h3>
+            <p>Akses layanan ZidSimPin kapan saja dan di mana saja melalui platform digital kami.</p>
+          </div>
+        </div>
+
+        <div class="about-section">
+          <h3>Visi Kami</h3>
+          <p>Menjadi platform simpan pinjam digital terpercaya yang membantu mewujudkan kesejahteraan finansial bagi semua lapisan masyarakat.</p>
+
+          <h3 style="margin-top: 2rem">Misi Kami</h3>
+          <p>1. Menyediakan layanan keuangan yang mudah diakses dan aman</p>
+          <p>2. Mendukung pertumbuhan ekonomi masyarakat melalui solusi finansial yang inovatif</p>
+          <p>3. Mengedukasi masyarakat tentang pengelolaan keuangan yang baik</p>
+
+          <div class="contact-info">
+            <h3>Hubungi Kami</h3>
+            <div class="contact-item">Email: info@zidsimpin.id</div>
+            <div class="contact-item">Telepon: (021) 1234-5678</div>
+            <div class="contact-item">Alamat: Jl. Keuangan Digital No. 123, Subang</div>
+            <div class="contact-item">Jam Operasional: Senin - Jumat, 09:00 - 17:00 WIB</div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="footer-content">
+        <p>&copy; 2024 ZidSimPin. Hak Cipta Dilindungi. Created by zidanmahmud</p>
+      </div>
+    </footer>
+
+    <script>
+      // Header hide on scroll
+      let lastScroll = 0;
+      window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+        const header = document.querySelector('header');
+
+        if (currentScroll > lastScroll) {
+          header.classList.add('hidden');
+        } else {
+          header.classList.remove('hidden');
+        }
+        lastScroll = currentScroll;
+      });
+
+      // Mobile menu toggle
+      document.querySelector('.menu-toggle').addEventListener('click', function () {
+        document.querySelector('nav ul').classList.toggle('active');
+      });
+    </script>
+  </body>
+</html>
